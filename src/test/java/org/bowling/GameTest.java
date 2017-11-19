@@ -19,4 +19,10 @@ public class GameTest {
         assertThat(score("9-9-9-9-9-9-9-9-9-9-"), is(90));
         assertThat(score("2-9-9-9-9-9-9-9-9-9-"), is(83));
     }
+
+    @Test
+    public void score_for_one_spare() throws Exception {
+        assertThat(score("9/9-9-9-9-9-9-9-9-9-"), is(100));
+        assertThat(score("8/9-9-9-9-9-9-9-9-9-"), is(100));
+    }
 }
