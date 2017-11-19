@@ -2,9 +2,8 @@ package org.bowling;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.bowling.Frame.NextRolls.next;
 
@@ -58,6 +57,10 @@ class Frame {
                 .orElse(0);
     }
 
+    private boolean lastFrame() {
+        return this.nextFrame == null;
+    }
+
     private boolean spare() {
         return anyMatch(Roll::spare);
     }
@@ -67,7 +70,13 @@ class Frame {
         return this;
     }
 
+    private Frame nextNextFrame() {
+        return this.nextFrame.nextFrame;
+    }
+
     static class NextRolls {
+
+
         private int count;
 
         NextRolls(int count) {
@@ -83,16 +92,21 @@ class Frame {
         }
 
         private List<Roll> nextRolls(Frame frame, int count) {
-            if (frame.nextFrame == null) {
+            if (frame.lastFrame()) {
                 return frame.rolls;
             }
 
-            if (frame.nextFrame.rolls.size() >= count) {
-                return frame.nextFrame.rolls.subList(0, count);
-            }
             List<Roll> rolls = frame.nextFrame.rolls;
-            List<Roll> nextRolls = nextRolls(frame.nextFrame.nextFrame, count - rolls.size());
-            return Stream.concat(rolls.stream(), nextRolls.stream()).collect(Collectors.toList());
+            if (enough(rolls, count)) {
+                return rolls.subList(0, count);
+            }
+
+            List<Roll> nextRolls = nextRolls(frame.nextNextFrame(), count - rolls.size());
+            return newArrayList(concat(rolls, nextRolls));
+        }
+
+        private boolean enough(List<Roll> rolls, int count) {
+            return rolls.size() >= count;
         }
     }
 }
