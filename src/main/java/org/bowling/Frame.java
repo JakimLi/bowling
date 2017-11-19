@@ -46,8 +46,8 @@ class Frame {
         return anyMatch(Roll::strike);
     }
 
-    private boolean anyMatch(Predicate<Roll> strike) {
-        return this.rolls.stream().anyMatch(strike);
+    private boolean anyMatch(Predicate<Roll> predicate) {
+        return this.rolls.stream().anyMatch(predicate);
     }
 
     private Integer pins(List<Roll> rolls) {
