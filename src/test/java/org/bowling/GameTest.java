@@ -20,7 +20,12 @@ public class GameTest {
     }
 
     @Test
-    public void score_with_spares() throws Exception {
+    public void score_with_some_spares() throws Exception {
         assertThat(score("5/5/5/5/5/5/5/5/5/5-"), is(140));
+    }
+
+    @Test
+    public void score_with_all_spares() throws Exception {
+        assertThat(score("5/5/5/5/5/5/5/5/5/5/5"), is(150));
     }
 }

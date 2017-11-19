@@ -5,11 +5,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.bowling.Frame.frame;
 
 class Game {
     static int score(String round) {
         return frames(rolls(round)).stream()
+                .limit(10)
                 .map(Frame::score)
                 .reduce(0, (a, b) -> a + b);
     }
@@ -21,21 +21,18 @@ class Game {
     }
 
     private static List<Frame> frames(List<Roll> rolls) {
-        Roll firstRoll = rolls.get(0);
-        Roll secondRoll = rolls.get(1);
-
-        if (rolls.size() == 2) {
-            return newArrayList(firstFrame(firstRoll, secondRoll));
+        if (rolls.size() <= 2) {
+            return newArrayList(Frame.frame().rolls(rolls));
         }
 
         List<Frame> frames = frames(rolls.subList(2, rolls.size()));
-        Frame frame = firstFrame(firstRoll, secondRoll).next(frames.get(0));
+        Frame frame = frame(rolls.subList(0, 2)).next(frames.get(0));
 
         return Stream.concat(newArrayList(frame).stream(), frames.stream())
                 .collect(Collectors.toList());
     }
 
-    private static Frame firstFrame(Roll firstRoll, Roll secondRoll) {
-        return frame().rolls(firstRoll, secondRoll);
+    private static Frame frame(List<Roll> rolls) {
+        return Frame.frame().rolls(rolls);
     }
 }

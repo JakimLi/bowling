@@ -3,7 +3,6 @@ package org.bowling;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Arrays.asList;
 
 class Frame {
 
@@ -16,11 +15,6 @@ class Frame {
 
     static Frame frame() {
         return new Frame();
-    }
-
-    Frame rolls(Roll... roll) {
-        this.rolls = asList(roll);
-        return this;
     }
 
     Frame next(Frame frame) {
@@ -44,5 +38,10 @@ class Frame {
 
     private boolean spare() {
         return rolls.stream().anyMatch(Roll::spare);
+    }
+
+    Frame rolls(List<Roll> rolls) {
+        this.rolls.addAll(rolls);
+        return this;
     }
 }
