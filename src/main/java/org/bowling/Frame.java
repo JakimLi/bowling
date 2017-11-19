@@ -26,15 +26,20 @@ class Frame {
     }
 
     int score() {
-        if (spare()) {
-            return 10 + pins(next(1).rollsAfter(this));
+        if (strike() || spare()) {
+            return 10 + bonus();
         }
-
-        if (strike()) {
-            return 10 + pins(next(2).rollsAfter(this));
-        }
-
         return pins(this.rolls);
+    }
+
+    private Integer bonus() {
+        return pins(next(bonusRoll()).rollsAfter(this));
+    }
+
+    private int bonusRoll() {
+        if (spare()) return 1;
+        if (strike()) return 2;
+        return 0;
     }
 
     private boolean strike() {
