@@ -16,6 +16,6 @@ class Converter {
     }
 
     private static Optional<Integer> get(char aChar) {
-        return ofNullable(of('-', 0).get(aChar));
+        return ofNullable(of('-', 0, 'X', 10).get(aChar));
     }
 }

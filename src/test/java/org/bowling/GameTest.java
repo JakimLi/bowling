@@ -25,4 +25,9 @@ public class GameTest {
         assertThat(score("9/9-9-9-9-9-9-9-9-9-"), is(100));
         assertThat(score("8/9-9-9-9-9-9-9-9-9-"), is(100));
     }
+
+    @Test
+    public void score_for_all_strikes() throws Exception {
+        assertThat(score("XXXXXXXXXXXX"), is(300));
+    }
 }
