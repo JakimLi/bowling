@@ -4,7 +4,12 @@ class Frame {
     private String value;
     private Frame lastFrame;
 
-    Frame(String value) {
+    Frame(String value, Frame lastFrame) {
+        this.value = value;
+        this.lastFrame = lastFrame;
+    }
+
+    private Frame(String value) {
         this.value = value;
     }
 
@@ -33,7 +38,7 @@ class Frame {
                 .reduce(0, (a, b) -> a + b);
     }
 
-    void lastFrame(Frame lastFrame) {
-        this.lastFrame = lastFrame;
+    static Frame none() {
+        return new Frame("");
     }
 }
