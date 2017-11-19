@@ -1,6 +1,5 @@
 package org.bowling;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,7 @@ class Game {
         return rolls.size() == 2 && noStrike(rolls);
     }
 
-    private static ArrayList<Frame> someFrames(Frame frame) {
+    private static List<Frame> someFrames(Frame frame) {
         return newArrayList(frame);
     }
 
