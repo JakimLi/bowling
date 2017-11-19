@@ -25,11 +25,19 @@ class Game {
             return newArrayList(frame(rolls));
         }
 
-        List<Frame> frames = frames(rolls.subList(step(rolls), rolls.size()));
-        Frame frame = frame(rolls.subList(0, step(rolls))).nextFrame(frames.get(0));
+        List<Frame> lastFrames = frames(last(rolls));
+        Frame frame = frame(first(rolls)).nextFrame(lastFrames.get(0));
 
-        return Stream.concat(newArrayList(frame).stream(), frames.stream())
+        return Stream.concat(newArrayList(frame).stream(), lastFrames.stream())
                 .collect(Collectors.toList());
+    }
+
+    private static List<Roll> first(List<Roll> rolls) {
+        return rolls.subList(0, step(rolls));
+    }
+
+    private static List<Roll> last(List<Roll> rolls) {
+        return rolls.subList(step(rolls), rolls.size());
     }
 
     private static int step(List<Roll> rolls) {
