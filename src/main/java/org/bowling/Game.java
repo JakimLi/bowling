@@ -23,7 +23,7 @@ class Game {
     }
 
     private static List<Frame> frames(List<Roll> rolls) {
-        if (rolls.size() == 1 || rolls.size() == 2 && noStrike(rolls)) {
+        if (lastRoll(rolls) || lastFrame(rolls)) {
             return someFrames(frame(rolls));
         }
 
@@ -31,6 +31,14 @@ class Game {
         Frame frame = frame(first(rolls)).chainNextFrame(lastFrames.get(0));
 
         return newArrayList(concat(someFrames(frame), lastFrames));
+    }
+
+    private static boolean lastRoll(List<Roll> rolls) {
+        return rolls.size() == 1;
+    }
+
+    private static boolean lastFrame(List<Roll> rolls) {
+        return rolls.size() == 2 && noStrike(rolls);
     }
 
     private static ArrayList<Frame> someFrames(Frame frame) {
