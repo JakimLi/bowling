@@ -1,9 +1,10 @@
 package org.bowling;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 
 class Game {
@@ -23,14 +24,21 @@ class Game {
 
     private static List<Frame> frames(List<Roll> rolls) {
         if (rolls.size() == 1 || rolls.size() == 2 && noStrike(rolls)) {
-            return newArrayList(frame(rolls));
+            return someFrames(frame(rolls));
         }
 
         List<Frame> lastFrames = frames(last(rolls));
-        Frame frame = frame(first(rolls)).nextFrame(lastFrames.get(0));
+        Frame frame = frame(first(rolls)).chainNextFrame(lastFrames.get(0));
 
-        return Stream.concat(newArrayList(frame).stream(), lastFrames.stream())
-                .collect(Collectors.toList());
+        return newArrayList(concat(someFrames(frame), lastFrames));
+    }
+
+    private static ArrayList<Frame> someFrames(Frame frame) {
+        return newArrayList(frame);
+    }
+
+    private static Frame frame(List<Roll> first) {
+        return Frame.frame().rolls(first);
     }
 
     private static boolean noStrike(List<Roll> rolls) {
@@ -47,9 +55,5 @@ class Game {
 
     private static int step(List<Roll> rolls) {
         return rolls.get(0).strike() ? 1 : 2;
-    }
-
-    private static Frame frame(List<Roll> rolls) {
-        return Frame.frame().rolls(rolls);
     }
 }

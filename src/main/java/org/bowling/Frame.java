@@ -20,7 +20,7 @@ class Frame {
         return new Frame();
     }
 
-    Frame nextFrame(Frame frame) {
+    Frame chainNextFrame(Frame frame) {
         this.nextFrame = frame;
         return this;
     }
