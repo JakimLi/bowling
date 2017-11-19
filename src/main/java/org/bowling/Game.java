@@ -30,7 +30,7 @@ class Game {
 
     private static List<Frame> getFrames(String frames) {
         List<Frame> aFrames = newArrayList();
-        for (int i = 0; i < frames.toCharArray().length; i+=2) {
+        for (int i = 0; i < frames.toCharArray().length; i += 2) {
             aFrames.add(new Frame(frames.substring(i, i + 2)));
         }
         return aFrames;
