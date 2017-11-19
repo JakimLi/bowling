@@ -2,11 +2,12 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-  compile(
-      'junit:junit:4.11'
-      )
+    compile(
+            'junit:junit:4.11',
+            'com.google.guava:guava:23.0'
+    )
 }

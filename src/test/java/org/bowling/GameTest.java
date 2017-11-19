@@ -13,4 +13,10 @@ public class GameTest {
         assertThat(score("12345123451234512345"), is(60));
         assertThat(score("22345123451234512345"), is(61));
     }
+
+    @Test
+    public void should_caclulate_scores_for_every_frame_heart_breaks() throws Exception {
+        assertThat(score("9-9-9-9-9-9-9-9-9-9-"), is(90));
+        assertThat(score("2-9-9-9-9-9-9-9-9-9-"), is(83));
+    }
 }
