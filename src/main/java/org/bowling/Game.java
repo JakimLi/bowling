@@ -1,13 +1,8 @@
 package org.bowling;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.IntFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.newLinkedList;
 
 class Game {
     static int score(String round) {
@@ -22,8 +17,8 @@ class Game {
         }
     }
 
-    private static Integer scores(List<Frame> frames1) {
-        return frames1.stream()
+    private static Integer scores(List<Frame> frames) {
+        return frames.stream()
                 .map(Frame::score)
                 .reduce(0, (a, b) -> a + b);
     }
