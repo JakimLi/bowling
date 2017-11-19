@@ -33,4 +33,9 @@ public class GameTest {
     public void score_with_all_strikes() throws Exception {
         assertThat(score("XXXXXXXXXXXX"), is(300));
     }
+
+    @Test
+    public void score_with_conjuctions() throws Exception {
+        assertThat(score("123/33X411-34224433"), is(68));
+    }
 }

@@ -21,7 +21,7 @@ class Game {
     }
 
     private static List<Frame> frames(List<Roll> rolls) {
-        if (rolls.size() <= 2) {
+        if (rolls.size() == 1 || rolls.size() == 2 && noStrike(rolls)) {
             return newArrayList(frame(rolls));
         }
 
@@ -30,6 +30,10 @@ class Game {
 
         return Stream.concat(newArrayList(frame).stream(), lastFrames.stream())
                 .collect(Collectors.toList());
+    }
+
+    private static boolean noStrike(List<Roll> rolls) {
+        return rolls.stream().noneMatch(Roll::strike);
     }
 
     private static List<Roll> first(List<Roll> rolls) {

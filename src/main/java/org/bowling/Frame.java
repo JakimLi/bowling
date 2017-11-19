@@ -1,6 +1,7 @@
 package org.bowling;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +44,11 @@ class Frame {
     }
 
     private boolean strike() {
-        return this.rolls.stream().anyMatch(Roll::strike);
+        return anyMatch(Roll::strike);
+    }
+
+    private boolean anyMatch(Predicate<Roll> strike) {
+        return this.rolls.stream().anyMatch(strike);
     }
 
     private Integer pins(List<Roll> rolls) {
@@ -53,7 +58,7 @@ class Frame {
     }
 
     private boolean spare() {
-        return rolls.stream().anyMatch(Roll::spare);
+        return anyMatch(Roll::spare);
     }
 
     Frame rolls(List<Roll> rolls) {
@@ -77,11 +82,15 @@ class Frame {
         }
 
         private List<Roll> nextRolls(Frame frame, int count) {
-            if (frame.rolls.size() >= count) {
-                return frame.rolls.subList(0, count);
+            if (frame.nextFrame == null) {
+                return frame.rolls;
             }
-            List<Roll> rolls = frame.rolls;
-            List<Roll> nextRolls = nextRolls(frame.nextFrame, count - rolls.size());
+
+            if (frame.nextFrame.rolls.size() >= count) {
+                return frame.nextFrame.rolls.subList(0, count);
+            }
+            List<Roll> rolls = frame.nextFrame.rolls;
+            List<Roll> nextRolls = nextRolls(frame.nextFrame.nextFrame, count - rolls.size());
             return Stream.concat(rolls.stream(), nextRolls.stream()).collect(Collectors.toList());
         }
     }
