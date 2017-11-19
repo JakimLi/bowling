@@ -11,5 +11,6 @@ public class GameTest {
     @Test
     public void should_cacludate_scores_for_situation_that_has_no_spare_and_strikes() throws Exception {
         assertThat(score("12345123451234512345"), is(60));
+        assertThat(score("22345123451234512345"), is(61));
     }
 }
