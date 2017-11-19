@@ -76,7 +76,6 @@ class Frame {
 
     static class NextRolls {
 
-
         private int count;
 
         NextRolls(int count) {
