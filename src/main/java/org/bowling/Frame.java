@@ -54,7 +54,8 @@ class Frame {
     private Integer pins(List<Roll> rolls) {
         return rolls.stream()
                 .map(Roll::pins)
-                .reduce(0, (a, b) -> a + b);
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 
     private boolean spare() {

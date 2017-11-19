@@ -11,7 +11,8 @@ class Game {
         return frames(rolls(round)).stream()
                 .limit(10)
                 .map(Frame::score)
-                .reduce(0, (a, b) -> a + b);
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 
     private static List<Roll> rolls(String round) {
