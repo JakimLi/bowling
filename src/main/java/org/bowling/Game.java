@@ -21,11 +21,7 @@ class Game {
     }
 
     private static List<Frame> frames(List<Roll> rolls) {
-        if (rolls.size() <= 1) {
-            return newArrayList(frame(rolls));
-        }
-
-        if (rolls.size() == 2 && noStrikes(rolls)) {
+        if (rolls.size() <= 2) {
             return newArrayList(frame(rolls));
         }
 
@@ -34,10 +30,6 @@ class Game {
 
         return Stream.concat(newArrayList(frame).stream(), frames.stream())
                 .collect(Collectors.toList());
-    }
-
-    private static boolean noStrikes(List<Roll> rolls) {
-        return rolls.stream().noneMatch(Roll::strike);
     }
 
     private static int step(List<Roll> rolls) {
