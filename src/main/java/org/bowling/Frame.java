@@ -1,8 +1,11 @@
 package org.bowling;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.bowling.Frame.NextRolls.next;
 
 class Frame {
 
@@ -17,23 +20,31 @@ class Frame {
         return new Frame();
     }
 
-    Frame next(Frame frame) {
+    Frame nextFrame(Frame frame) {
         this.nextFrame = frame;
         return this;
     }
 
     int score() {
-        return spare() ? 10 + nextRoll().pins() : pins();
+        if (spare()) {
+            return 10 + pins(next(1).rollsAfter(this));
+        }
+
+        if (strike()) {
+            return 10 + pins(next(2).rollsAfter(this));
+        }
+
+        return pins(this.rolls);
     }
 
-    private Integer pins() {
-        return this.rolls.stream()
+    private boolean strike() {
+        return this.rolls.stream().anyMatch(Roll::strike);
+    }
+
+    private Integer pins(List<Roll> rolls) {
+        return rolls.stream()
                 .map(Roll::pins)
                 .reduce(0, (a, b) -> a + b);
-    }
-
-    private Roll nextRoll() {
-        return this.nextFrame.rolls.stream().findFirst().get();
     }
 
     private boolean spare() {
@@ -43,5 +54,30 @@ class Frame {
     Frame rolls(List<Roll> rolls) {
         this.rolls.addAll(rolls);
         return this;
+    }
+
+    static class NextRolls {
+        private int count;
+
+        NextRolls(int count) {
+            this.count = count;
+        }
+
+        static NextRolls next(int count) {
+            return new NextRolls(count);
+        }
+
+        List<Roll> rollsAfter(Frame frame) {
+            return nextRolls(frame, count);
+        }
+
+        private List<Roll> nextRolls(Frame frame, int count) {
+            if (frame.rolls.size() >= count) {
+                return frame.rolls.subList(0, count);
+            }
+            List<Roll> rolls = frame.rolls;
+            List<Roll> nextRolls = nextRolls(frame.nextFrame, count - rolls.size());
+            return Stream.concat(rolls.stream(), nextRolls.stream()).collect(Collectors.toList());
+        }
     }
 }

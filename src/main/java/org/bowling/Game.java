@@ -21,15 +21,27 @@ class Game {
     }
 
     private static List<Frame> frames(List<Roll> rolls) {
-        if (rolls.size() <= 2) {
-            return newArrayList(Frame.frame().rolls(rolls));
+        if (rolls.size() <= 1) {
+            return newArrayList(frame(rolls));
         }
 
-        List<Frame> frames = frames(rolls.subList(2, rolls.size()));
-        Frame frame = frame(rolls.subList(0, 2)).next(frames.get(0));
+        if (rolls.size() == 2 && noStrikes(rolls)) {
+            return newArrayList(frame(rolls));
+        }
+
+        List<Frame> frames = frames(rolls.subList(step(rolls), rolls.size()));
+        Frame frame = frame(rolls.subList(0, step(rolls))).nextFrame(frames.get(0));
 
         return Stream.concat(newArrayList(frame).stream(), frames.stream())
                 .collect(Collectors.toList());
+    }
+
+    private static boolean noStrikes(List<Roll> rolls) {
+        return rolls.stream().noneMatch(Roll::strike);
+    }
+
+    private static int step(List<Roll> rolls) {
+        return rolls.get(0).strike() ? 1 : 2;
     }
 
     private static Frame frame(List<Roll> rolls) {
