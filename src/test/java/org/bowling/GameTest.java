@@ -30,4 +30,9 @@ public class GameTest {
     public void score_for_all_strikes() throws Exception {
         assertThat(score("XXXXXXXXXXXX"), is(300));
     }
+
+    @Test
+    public void score_for_one_spare_one_strike() throws Exception {
+        assertThat(score("123/33X411-34224433"), is(68));
+    }
 }
