@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.collect.Maps.newLinkedHashMap;
 import static org.tennis.Player.player;
@@ -36,12 +37,16 @@ class Tennis {
     String getScore() {
         Optional<String> winning = one(Rules::win, this::cheerWin);
         Optional<String> vanning = one(Rules::van, this::cheerVan);
-        Optional<String> deuce = one(Rules::deuce, this::deuce);
+        Optional<String> deuce = one(Rules::deuce, player -> deuce());
 
-        return deuce.orElse(winning.orElse(vanning.orElse(score())));
+        return Stream.of(deuce, winning, vanning)
+                .filter(Optional::isPresent)
+                .findFirst()
+                .map(Optional::get)
+                .orElse(score());
     }
 
-    private String deuce(Player player) {
+    private String deuce() {
         return "deuce";
     }
 
