@@ -70,10 +70,6 @@ class Frame {
         return this;
     }
 
-    private Frame nextNextFrame() {
-        return this.nextFrame.nextFrame;
-    }
-
     static class NextRolls {
 
         private int count;
@@ -100,7 +96,7 @@ class Frame {
                 return rolls.subList(0, count);
             }
 
-            List<Roll> nextRolls = nextRolls(frame.nextNextFrame(), count - rolls.size());
+            List<Roll> nextRolls = nextRolls(frame.nextFrame, count - rolls.size());
             return newArrayList(concat(rolls, nextRolls));
         }
 
