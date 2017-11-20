@@ -44,8 +44,8 @@ class Game {
         return newArrayList(frame);
     }
 
-    private static Frame frame(List<Roll> first) {
-        return Frame.frame().rolls(first);
+    private static Frame frame(List<Roll> rolls) {
+        return Frame.frame().rolls(rolls);
     }
 
     private static boolean noStrike(List<Roll> rolls) {
