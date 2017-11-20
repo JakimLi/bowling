@@ -2,7 +2,7 @@ package org.bowling;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 
 import static java.util.Arrays.stream;
 import static org.bowling.Roll.Type.from;
@@ -12,22 +12,31 @@ class Roll {
     private static final int SLASH = 47;
     private static final int X = 88;
     private int value;
+    private int pins;
 
     Roll(int value) {
         this.value = value;
+        this.pins = from(this.value).map(type -> type.score).orElseGet(() -> this.value - 48);
     }
 
     static Integer pins(List<Roll> rolls) {
         return rolls.stream()
-                .map(Roll::pins)
-                .reduce(sum())
+                .peek(spare(rolls))
+                .map(roll -> roll.pins)
+                .reduce(Integer::sum)
                 .orElse(0);
     }
 
-    private int pins() {
-        return from(this.value)
-                .map(type -> type.score)
-                .orElseGet(() -> this.value - 48);
+    private static Consumer<Roll> spare(List<Roll> rolls) {
+        return roll -> {
+            if (roll.spare()) {
+                roll.pins = 10 - last(rolls, roll).pins;
+            }
+        };
+    }
+
+    private static Roll last(List<Roll> rolls, Roll roll) {
+        return rolls.get(rolls.indexOf(roll) - 1);
     }
 
     boolean spare() {
@@ -38,14 +47,9 @@ class Roll {
         return this.value == X;
     }
 
-    private static BinaryOperator<Integer> sum() {
-        return (a, b) -> b == Type.SPARE_SCORE ? 10 : a + b;
-    }
-
     enum Type {
-        STRIKE(X, 10), SPARE(SLASH, Type.SPARE_SCORE), HEARTBREAK(DASH, 0);
+        STRIKE(X, 10), SPARE(SLASH, 0), HEARTBREAK(DASH, 0);
 
-        private static final int SPARE_SCORE = -1;
         private int character;
         private int score;
 
