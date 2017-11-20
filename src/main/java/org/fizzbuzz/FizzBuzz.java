@@ -1,4 +1,4 @@
-package org.bowling.fizzbuzz;
+package org.fizzbuzz;
 
 import java.util.Map;
 

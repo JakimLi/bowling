@@ -1,9 +1,9 @@
-package org.bowling.fizzbuzz;
+package org.fizzbuzz;
 
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
-import static org.bowling.fizzbuzz.FizzBuzz.with;
+import static org.fizzbuzz.FizzBuzz.with;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
