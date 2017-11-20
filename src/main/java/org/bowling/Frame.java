@@ -27,10 +27,7 @@ class Frame {
     }
 
     int score() {
-        if (strike() || spare()) {
-            return 10 + bonus();
-        }
-        return pins(this.rolls);
+        return pins(this.rolls) + bonus();
     }
 
     private Integer bonus() {
@@ -77,7 +74,7 @@ class Frame {
         }
 
         List<Roll> rollsAfter(Frame frame) {
-            return nextRolls(frame, count);
+            return count == 0 ? newArrayList() : nextRolls(frame, count);
         }
 
         private List<Roll> nextRolls(Frame frame, int count) {
