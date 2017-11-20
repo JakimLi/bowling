@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Maps.newLinkedHashMap;
@@ -33,28 +34,29 @@ class Tennis {
     }
 
     String getScore() {
-        return oneWin().orElse(oneVan().orElse(score()));
+        Optional<String> winning = one(Rules::win, this::cheerWin);
+        Optional<String> vanning = one(Rules::van, this::cheerVan);
+        Optional<String> deuce = one(Rules::deuce, this::deuce);
+
+        return deuce.orElse(winning.orElse(vanning.orElse(score())));
     }
 
-    private Optional<String> oneVan() {
+    private String deuce(Player player) {
+        return "deuce";
+    }
+
+    private Optional<String> one(Predicate<Player> rule, Function<Player, String> cheer) {
         return this.players.values().stream()
-                .filter(Rules::vanner)
+                .filter(rule)
                 .findFirst()
-                .map(this::cheerVan);
+                .map(cheer);
     }
 
     private String cheerVan(Player player) {
         return String.format("advantage %s", player.name());
     }
 
-    private Optional<String> oneWin() {
-        return this.players.values().stream()
-                .filter(Rules::winner)
-                .findFirst()
-                .map(this::cheer);
-    }
-
-    private String cheer(Player winner) {
+    private String cheerWin(Player winner) {
         return String.format("win for %s", winner.name());
     }
 
