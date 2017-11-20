@@ -30,8 +30,9 @@ class Player {
         return score;
     }
 
-    void opponent(Player opponent) {
+    void against(Player opponent) {
         this.opponent = opponent;
+        opponent.opponent = this;
     }
 
     Player opponent() {

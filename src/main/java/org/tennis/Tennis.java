@@ -15,14 +15,12 @@ class Tennis {
     private Map<String, Player> players = newLinkedHashMap();
 
     private Tennis(String server, String receiver) {
-        Player playerServer = player(server);
-        Player playerReceiver = player(receiver);
+        Player theServer = player(server);
+        Player theReceiver = player(receiver);
 
-        playerServer.opponent(playerReceiver);
-        playerReceiver.opponent(playerServer);
+        theServer.against(theReceiver);
 
-        players.put(server, playerServer);
-        players.put(receiver, playerReceiver);
+        players.putAll(of(server, theServer, receiver, theReceiver));
     }
 
     static Tennis game(String server, String receiver) {
