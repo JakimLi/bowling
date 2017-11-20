@@ -29,6 +29,7 @@ public class GameTest {
     @Test
     public void score_for_all_strikes() throws Exception {
         assertThat(score("XXXXXXXXXXXX"), is(300));
+        assertThat(score("XXXXXXXXXX11"), is(273));
     }
 
     @Test
