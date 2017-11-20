@@ -1,7 +1,5 @@
 package org.tennis;
 
-import java.util.function.Predicate;
-
 class Rules {
 
     static boolean win(Player player) {
@@ -16,20 +14,20 @@ class Rules {
         return player.matches(bothScore(atLeast(3)), deuce());
     }
 
-    private static Predicate<Player> deuce() {
+    private static Rule deuce() {
         return advanced(just(0));
     }
 
-    private static Predicate<Player> advanced(Matcher matcher) {
+    private static Rule advanced(Matcher matcher) {
         return player -> matcher.match(player.getScore(), player.opponent().getScore());
     }
 
-    private static Predicate<Player> score(Matcher matcher) {
+    private static Rule score(Matcher matcher) {
         return player -> matcher.match(player.getScore(), 0);
     }
 
-    private static Predicate<Player> bothScore(Matcher matcher) {
-        return player -> score(matcher).test(player) && score(matcher).test(player.opponent());
+    private static Rule bothScore(Matcher matcher) {
+        return player -> score(matcher).match(player) && score(matcher).match(player.opponent());
     }
 
     private static Matcher atLeast(int gap) {
@@ -38,6 +36,10 @@ class Rules {
 
     private static Matcher just(int gap) {
         return (a, b) -> a - b == gap;
+    }
+
+    interface Rule {
+        boolean match(Player player);
     }
 
     interface Matcher {
