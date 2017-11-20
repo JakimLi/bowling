@@ -27,12 +27,14 @@ public class GameTest {
     @Test
     public void score_with_all_spares() throws Exception {
         assertThat(score("5/5/5/5/5/5/5/5/5/5/5"), is(150));
+        assertThat(score("6/5/5/5/5/5/5/5/5/5/5"), is(150));
     }
 
     @Test
     public void score_with_all_strikes() throws Exception {
         assertThat(score("XXXXXXXXXXXX"), is(300));
         assertThat(score("XXXXXXXXXX11"), is(273));
+        assertThat(score("XXXXXXXXXX1/"), is(281));
     }
 
     @Test

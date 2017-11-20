@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.bowling.Frame.NextRolls.next;
+import static org.bowling.Roll.sum;
 
 class Frame {
 
@@ -53,7 +54,7 @@ class Frame {
     private Integer pins(List<Roll> rolls) {
         return rolls.stream()
                 .map(Roll::pins)
-                .reduce(Integer::sum)
+                .reduce(sum())
                 .orElse(0);
     }
 
