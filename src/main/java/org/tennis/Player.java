@@ -1,9 +1,12 @@
 package org.tennis;
 
+import java.util.List;
+
 class Player {
 
     private String name;
     private int score;
+    private Player opponent;
 
     private Player(String name) {
         this.name = name;
@@ -23,5 +26,17 @@ class Player {
 
     int getScore() {
         return score;
+    }
+
+    void opponent(Player opponent) {
+        this.opponent = opponent;
+    }
+
+    Player opponent() {
+        return opponent;
+    }
+
+    boolean win(List<Rule> rules) {
+        return rules.stream().allMatch(rule -> rule.match(this));
     }
 }

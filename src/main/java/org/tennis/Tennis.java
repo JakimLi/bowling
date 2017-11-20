@@ -3,6 +3,7 @@ package org.tennis;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -13,8 +14,14 @@ class Tennis {
     private Map<String, Player> players = newLinkedHashMap();
 
     private Tennis(String server, String receiver) {
-        players.put(server, player(server));
-        players.put(receiver, player(receiver));
+        Player playerServer = player(server);
+        Player playerReceiver = player(receiver);
+
+        playerServer.opponent(playerReceiver);
+        playerReceiver.opponent(playerServer);
+
+        players.put(server, playerServer);
+        players.put(receiver, playerReceiver);
     }
 
     static Tennis game(String server, String receiver) {
@@ -26,6 +33,21 @@ class Tennis {
     }
 
     String getScore() {
+        return oneWin().orElse(score());
+    }
+
+    private Optional<String> oneWin() {
+        return this.players.values().stream()
+                .filter(WinningRule::winner)
+                .findFirst()
+                .map(this::cheer);
+    }
+
+    private String cheer(Player winner) {
+        return String.format("win for %s", winner.name());
+    }
+
+    private String score() {
         return players.values().stream()
                 .map(Player::getScore)
                 .map(peculiar())
