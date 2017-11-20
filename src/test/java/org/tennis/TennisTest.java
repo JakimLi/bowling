@@ -61,6 +61,14 @@ public class TennisTest {
         assertThat(game.getScore(), is("win for player2"));
     }
 
+    @Test
+    public void player1_vin_at_4_3() throws Exception {
+        won(PLAYER_1, 4);
+        won(PLAYER_2, 3);
+
+        assertThat(game.getScore(), is("advantage player1"));
+    }
+
     private void won(String player, int count) {
         range(0, count).forEach(i -> game.wonPoint(player));
     }

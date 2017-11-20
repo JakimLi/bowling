@@ -33,7 +33,18 @@ class Tennis {
     }
 
     String getScore() {
-        return oneWin().orElse(score());
+        return oneWin().orElse(oneVan().orElse(score()));
+    }
+
+    private Optional<String> oneVan() {
+        return this.players.values().stream()
+                .filter(WinningRule::vanner)
+                .findFirst()
+                .map(this::cheerVan);
+    }
+
+    private String cheerVan(Player player) {
+        return String.format("advantage %s", player.name());
     }
 
     private Optional<String> oneWin() {
