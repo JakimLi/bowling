@@ -14,6 +14,10 @@ class Rules {
         return player.matches(newArrayList(bothAtLeast(3), advanced(1)));
     }
 
+    static boolean deuce(Player player) {
+        return player.matches(newArrayList(bothAtLeast(3), equal()));
+    }
+
     private static Predicate<Player> advanced(int points) {
         return player1 -> player1.getScore() - player1.opponent().getScore() >= points;
     }
@@ -28,9 +32,5 @@ class Rules {
 
     private static Predicate<Player> bothAtLeast(int points) {
         return player -> atLeast(points).test(player) && atLeast(points).test(player.opponent());
-    }
-
-    static boolean deuce(Player player) {
-        return player.matches(newArrayList(bothAtLeast(3), equal()));
     }
 }
