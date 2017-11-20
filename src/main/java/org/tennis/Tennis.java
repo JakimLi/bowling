@@ -1,7 +1,5 @@
 package org.tennis;
 
-import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -9,6 +7,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.collect.Maps.newLinkedHashMap;
 import static org.tennis.Player.player;
 
@@ -35,9 +34,9 @@ class Tennis {
     }
 
     String getScore() {
-        Optional<String> winning = one(Rules::win, this::cheerWin);
-        Optional<String> vanning = one(Rules::van, this::cheerVan);
-        Optional<String> deuce = one(Rules::deuce, player -> deuce());
+        Optional<String> winning = someone(Rules::win, winner -> cheer("win for %s", winner.name()));
+        Optional<String> vanning = someone(Rules::van, vanner -> cheer("advantage %s", vanner.name()));
+        Optional<String> deuce = someone(Rules::deuce, player -> "deuce");
 
         return Stream.of(deuce, winning, vanning)
                 .filter(Optional::isPresent)
@@ -46,23 +45,15 @@ class Tennis {
                 .orElse(score());
     }
 
-    private String deuce() {
-        return "deuce";
-    }
-
-    private Optional<String> one(Predicate<Player> rule, Function<Player, String> cheer) {
+    private Optional<String> someone(Predicate<Player> rule, Function<Player, String> cheer) {
         return this.players.values().stream()
                 .filter(rule)
                 .findFirst()
                 .map(cheer);
     }
 
-    private String cheerVan(Player player) {
-        return String.format("advantage %s", player.name());
-    }
-
-    private String cheerWin(Player winner) {
-        return String.format("win for %s", winner.name());
+    private String cheer(String message, String name) {
+        return String.format(message, name);
     }
 
     private String score() {
@@ -73,7 +64,7 @@ class Tennis {
     }
 
     private Function<Integer, String> peculiar() {
-        return score -> ImmutableMap.of(0, "love", 1, "fifteen", 2, "thirty", 3, "forty")
+        return score -> of(0, "love", 1, "fifteen", 2, "thirty", 3, "forty")
                 .getOrDefault(score, String.valueOf(score));
     }
 }
