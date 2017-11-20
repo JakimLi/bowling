@@ -28,16 +28,16 @@ class Rules {
         return player -> matcher.match(player.getScore(), 0);
     }
 
+    private static Predicate<Player> bothScore(Matcher matcher) {
+        return player -> score(matcher).test(player) && score(matcher).test(player.opponent());
+    }
+
     private static Matcher atLeast(int gap) {
         return (a, b) -> a - b >= gap;
     }
 
     private static Matcher just(int gap) {
         return (a, b) -> a - b == gap;
-    }
-
-    private static Predicate<Player> bothScore(Matcher matcher) {
-        return player -> score(matcher).test(player) && score(matcher).test(player.opponent());
     }
 
     interface Matcher {
