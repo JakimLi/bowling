@@ -38,7 +38,7 @@ class Roll {
         return this.value == X;
     }
 
-    static BinaryOperator<Integer> sum() {
+    private static BinaryOperator<Integer> sum() {
         return (a, b) -> b == Type.SPARE_SCORE ? 10 : a + b;
     }
 
