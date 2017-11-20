@@ -45,7 +45,8 @@ class Tennis {
                 .orElse(score());
     }
 
-    private Optional<String> someone(Predicate<Player> rule, Function<Player, String> cheer) {
+    private Optional<String> someone(Predicate<Player> rule,
+                                     Function<Player, String> cheer) {
         return this.players.values().stream()
                 .filter(rule)
                 .findFirst()
