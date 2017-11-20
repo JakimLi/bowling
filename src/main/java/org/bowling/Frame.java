@@ -62,7 +62,7 @@ class Frame {
     private int pins() {
         return value.chars()
                 .map(Converter::toNumber)
-                .reduce(0, (a, b) -> a + b);
+                .reduce(0, (a, b) -> b == -1 ? 10 : a + b);
     }
 
     static Frame none() {

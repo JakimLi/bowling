@@ -1,9 +1,5 @@
 package org.bowling;
 
-import com.google.common.collect.ImmutableMap;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.collect.ImmutableMap.of;
@@ -16,6 +12,6 @@ class Converter {
     }
 
     private static Optional<Integer> get(char aChar) {
-        return ofNullable(of('-', 0, 'X', 10).get(aChar));
+        return ofNullable(of('-', 0, 'X', 10, '/', -1).get(aChar));
     }
 }

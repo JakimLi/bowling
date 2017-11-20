@@ -30,6 +30,7 @@ public class GameTest {
     public void score_for_all_strikes() throws Exception {
         assertThat(score("XXXXXXXXXXXX"), is(300));
         assertThat(score("XXXXXXXXXX11"), is(273));
+        assertThat(score("XXXXXXXXXX1/"), is(281));
     }
 
     @Test
