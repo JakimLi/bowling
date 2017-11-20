@@ -48,9 +48,17 @@ public class TennisTest {
     @Test
     public void player1_win_at_5_to_3() throws Exception {
         won(PLAYER_1, 5);
-        won(PLAYER_1, 3);
+        won(PLAYER_2, 3);
 
         assertThat(game.getScore(), is("win for player1"));
+    }
+
+    @Test
+    public void player2_win_at_5_to_3() throws Exception {
+        won(PLAYER_2, 5);
+        won(PLAYER_1, 3);
+
+        assertThat(game.getScore(), is("win for player2"));
     }
 
     private void won(String player, int count) {
