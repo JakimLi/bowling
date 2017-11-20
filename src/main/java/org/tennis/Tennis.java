@@ -34,8 +34,8 @@ class Tennis {
     }
 
     String getScore() {
-        Optional<String> winning = someone(Rules::win, winner -> cheer("win for %s", winner.name()));
-        Optional<String> vanning = someone(Rules::van, vanner -> cheer("advantage %s", vanner.name()));
+        Optional<String> winning = someone(Rules::win, winner -> cheer("win for %s", winner));
+        Optional<String> vanning = someone(Rules::van, vanner -> cheer("advantage %s", vanner));
         Optional<String> deuce = someone(Rules::deuce, player -> "deuce");
 
         return Stream.of(deuce, winning, vanning)
@@ -52,8 +52,8 @@ class Tennis {
                 .map(cheer);
     }
 
-    private String cheer(String message, String name) {
-        return String.format(message, name);
+    private String cheer(String message, Player player) {
+        return String.format(message, player.name());
     }
 
     private String score() {

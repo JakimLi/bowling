@@ -13,7 +13,11 @@ class Rules {
     }
 
     static boolean deuce(Player player) {
-        return player.matches(bothScore(atLeast(3)), advanced(just(0)));
+        return player.matches(bothScore(atLeast(3)), deuce());
+    }
+
+    private static Predicate<Player> deuce() {
+        return advanced(just(0));
     }
 
     private static Predicate<Player> advanced(Matcher matcher) {
