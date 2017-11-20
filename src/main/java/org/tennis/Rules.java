@@ -2,35 +2,41 @@ package org.tennis;
 
 import java.util.function.Predicate;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 class Rules {
 
     static boolean win(Player player) {
-        return player.matches(newArrayList(atLeast(4), advanced(2)));
+        return player.matches(score(atLeast(4)), advanced(atLeast(2)));
     }
 
     static boolean van(Player player) {
-        return player.matches(newArrayList(bothAtLeast(3), advanced(1)));
+        return player.matches(bothScore(atLeast(3)), advanced(just(1)));
     }
 
     static boolean deuce(Player player) {
-        return player.matches(newArrayList(bothAtLeast(3), equal()));
+        return player.matches(bothScore(atLeast(3)), advanced(just(0)));
     }
 
-    private static Predicate<Player> advanced(int points) {
-        return player1 -> player1.getScore() - player1.opponent().getScore() >= points;
+    private static Predicate<Player> advanced(Matcher matcher) {
+        return player -> matcher.match(player.getScore(), player.opponent().getScore());
     }
 
-    private static Predicate<Player> equal() {
-        return player -> player.getScore() == player.opponent().getScore();
+    private static Predicate<Player> score(Matcher matcher) {
+        return player -> matcher.match(player.getScore(), 0);
     }
 
-    private static Predicate<Player> atLeast(int points) {
-        return player1 -> player1.getScore() >= points;
+    private static Matcher atLeast(int gap) {
+        return (a, b) -> a - b >= gap;
     }
 
-    private static Predicate<Player> bothAtLeast(int points) {
-        return player -> atLeast(points).test(player) && atLeast(points).test(player.opponent());
+    private static Matcher just(int gap) {
+        return (a, b) -> a - b == gap;
+    }
+
+    private static Predicate<Player> bothScore(Matcher matcher) {
+        return player -> score(matcher).test(player) && score(matcher).test(player.opponent());
+    }
+
+    interface Matcher {
+        boolean match(int a, int b);
     }
 }

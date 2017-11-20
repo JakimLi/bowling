@@ -1,7 +1,7 @@
 package org.tennis;
 
-import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 class Player {
 
@@ -37,7 +37,8 @@ class Player {
         return opponent;
     }
 
-    boolean matches(List<Predicate<Player>> rules) {
-        return rules.stream().allMatch(rule -> rule.test(this));
+    @SafeVarargs
+    final boolean matches(Predicate<Player>... rules) {
+        return Stream.of(rules).allMatch(rule -> rule.test(this));
     }
 }
