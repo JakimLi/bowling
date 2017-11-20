@@ -5,7 +5,11 @@ import static com.google.common.collect.Lists.newArrayList;
 class WinningRule {
 
     static boolean winner(Player player) {
-        return player.win(newArrayList(atLeast(4), advanced(2)));
+        return player.matches(newArrayList(atLeast(4), advanced(2)));
+    }
+
+    static boolean vanner(Player player) {
+        return player.matches(newArrayList(bothAtLeast(3), advanced(1)));
     }
 
     private static Rule advanced(int points) {
@@ -18,9 +22,5 @@ class WinningRule {
 
     private static Rule bothAtLeast(int points) {
         return player -> atLeast(points).match(player) && atLeast(points).match(player.opponent());
-    }
-
-    static boolean vanner(Player player) {
-        return player.win(newArrayList(bothAtLeast(3), advanced(1)));
     }
 }

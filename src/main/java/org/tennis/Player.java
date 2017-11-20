@@ -36,7 +36,7 @@ class Player {
         return opponent;
     }
 
-    boolean win(List<Rule> rules) {
+    boolean matches(List<Rule> rules) {
         return rules.stream().allMatch(rule -> rule.match(this));
     }
 }
