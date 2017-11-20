@@ -38,7 +38,7 @@ class Tennis {
 
     private Optional<String> oneVan() {
         return this.players.values().stream()
-                .filter(WinningRule::vanner)
+                .filter(Rules::vanner)
                 .findFirst()
                 .map(this::cheerVan);
     }
@@ -49,7 +49,7 @@ class Tennis {
 
     private Optional<String> oneWin() {
         return this.players.values().stream()
-                .filter(WinningRule::winner)
+                .filter(Rules::winner)
                 .findFirst()
                 .map(this::cheer);
     }
