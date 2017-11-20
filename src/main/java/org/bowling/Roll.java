@@ -1,5 +1,6 @@
 package org.bowling;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 
@@ -16,7 +17,14 @@ class Roll {
         this.value = value;
     }
 
-    int pins() {
+    static Integer pins(List<Roll> rolls) {
+        return rolls.stream()
+                .map(Roll::pins)
+                .reduce(sum())
+                .orElse(0);
+    }
+
+    private int pins() {
         return from(this.value)
                 .map(type -> type.score)
                 .orElseGet(() -> this.value - 48);
