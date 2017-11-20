@@ -26,7 +26,7 @@ class Frame {
         if (isNotStrikeBeforeOfLast()) {
             return 0;
         }
-        return converterValue();
+        return pins();
     }
 
     private int converterValue() {
